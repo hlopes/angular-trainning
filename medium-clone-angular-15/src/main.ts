@@ -11,7 +11,9 @@ import { AppComponent } from './app/app.component'
 import { routes } from './app/app.routes'
 import { authFeatureKey, authReducer } from './app/auth/store/reducer'
 import * as authEffects from './app/auth/store/effects'
+import * as feedEffects from './app/shared/components/feed/store/effects'
 import { authInterceptor } from './app/shared/services/authInterceptor'
+import {feedFeatureKey, feedReducer} from "./app/shared/components/feed/store/reducer";
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -19,7 +21,8 @@ bootstrapApplication(AppComponent, {
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(authFeatureKey, authReducer),
-    provideEffects(authEffects),
+    provideState(feedFeatureKey, feedReducer),
+    provideEffects(authEffects, feedEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

@@ -11,4 +11,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./auth/auth.routes').then((mod) => mod.loginRoutes),
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./globalFeed/globalFeed.routes').then((mod) => mod.routes),
+  },
 ]

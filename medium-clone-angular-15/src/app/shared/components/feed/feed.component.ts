@@ -6,12 +6,14 @@ import {combineLatest} from "rxjs";
 
 import {feedActions} from "./store/actions";
 import {selectError, selectFeedData, selectIsLoading} from "./store/reducer";
+import {ErrorMessageComponent} from "../errorMessage/errorMessage.component";
+import {LoadingComponent} from "../loading/errorMessage.component";
 
 @Component({
   selector: 'mc-feed',
   standalone: true,
   templateUrl: './feed.component.html',
-  imports: [CommonModule, RouterLink]
+  imports: [CommonModule, RouterLink, ErrorMessageComponent, LoadingComponent]
 })
 export class FeedComponent implements OnInit{
   @Input()

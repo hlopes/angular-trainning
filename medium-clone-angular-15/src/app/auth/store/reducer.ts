@@ -2,6 +2,7 @@ import { createFeature, createReducer, on } from '@ngrx/store'
 import { AuthState } from '../types/authState'
 import { authActions } from './actions'
 import { routerNavigatedAction } from '@ngrx/router-store'
+import { inject } from '@angular/core'
 
 const initialState: AuthState = {
   isSubmitting: false,
@@ -58,6 +59,22 @@ const authFeature = createFeature({
     on(authActions.getCurrentuserFailure, (state) => ({
       ...state,
       isLoading: false,
+      currentUser: null,
+    })),
+
+    on(authActions.updateCurrentuserSuccess, (state, action) => ({
+      ...state,
+      currentUser: action.currentUser,
+    })),
+    on(authActions.updateCurrentuserFailure, (state, action) => ({
+      ...state,
+      currentUser: null,
+      validationErrors: action.errors,
+    })),
+
+    on(authActions.logout, (state) => ({
+      ...state,
+      ...initialState,
       currentUser: null,
     })),
 

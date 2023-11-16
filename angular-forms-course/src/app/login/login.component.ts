@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from '@angular/forms';
 
 
 @Component({
@@ -8,6 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  val= {
+    email: 'abc@abc.com',
+    password: '123'
+  }
 
   constructor() {
 
@@ -18,4 +23,10 @@ export class LoginComponent implements OnInit {
 
   }
 
+  onSubmit(loginForm: NgForm, event) {
+    console.log("### loginForm = ", loginForm);
+    console.log("### event = ", event);
+
+    console.log("### val = ", this.val);
+  }
 }

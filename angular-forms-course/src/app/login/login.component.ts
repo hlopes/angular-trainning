@@ -1,27 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
-
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 @Component({
-  selector: 'login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
+  val = {
+    email: "abc@abc.com",
+    password: "123",
+  };
 
-  val= {
-    email: 'abc@abc.com',
-    password: '123'
-  }
+  constructor() {}
 
-  constructor() {
-
-
-  }
-
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   onSubmit(loginForm: NgForm, event) {
     console.log("### loginForm = ", loginForm);
@@ -29,4 +22,6 @@ export class LoginComponent implements OnInit {
 
     console.log("### val = ", this.val);
   }
+
+  login() {}
 }

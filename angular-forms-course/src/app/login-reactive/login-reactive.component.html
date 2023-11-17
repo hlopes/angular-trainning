@@ -7,21 +7,39 @@
       <mat-form-field>
 
         <input matInput type="email" name="email"
-               placeholder="Email" [formControl]="email">
+               placeholder="Email" formControlName="email">
+
+        <mat-error *ngIf="email.errors?.required">email mandatory</mat-error>
+        <mat-error *ngIf="email.errors?.minlength">min should have {{email.errors.minlength.requiredLength}}</mat-error>
+        <mat-error *ngIf="email.errors?.email">invalid email</mat-error>
 
       </mat-form-field>
 
       <mat-form-field>
 
-        <input matInput type="password" placeholder="Password" [formControl]="password">
+        <input matInput type="password" placeholder="Password" formControlName="password">
 
+        <mat-error *ngIf="password.errors?.required">password mandatory</mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="primary">
+      <ng-container
+        *ngIf="password.errors | onlyOneError:['minlength', 'passwordStrength'] as error">
+        <p class="field-message" *ngIf="error?.passwordStrength">not strong enough</p>
+        <p class="field-message"  *ngIf="error?.minlength">min should have {{error?.minlength.requiredLength}}</p>
+      </ng-container>
+
+
+      <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="login()">
         Login
       </button>
 
+      <button mat-raised-button (click)="reset()">
+        Reset
+      </button>
+
     </form>
+
+
 
     <div class="form-val">
       {{form.value | json}}

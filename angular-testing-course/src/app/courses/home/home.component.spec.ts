@@ -5,6 +5,8 @@ import {
   flush,
   flushMicrotasks,
   TestBed,
+  tick,
+  waitForAsync,
 } from "@angular/core/testing";
 import { CoursesModule } from "../courses.module";
 import { DebugElement } from "@angular/core";
@@ -37,7 +39,7 @@ describe("HomeComponent", () => {
     (course) => course.category === "ADVANCED",
   );
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const coursesServiceSpy = jasmine.createSpyObj("CourseService", [
       "findAllCourses",
     ]);
@@ -94,7 +96,7 @@ describe("HomeComponent", () => {
     expect(tabs.length).toBe(2);
   });
 
-  it("should display advanced courses when tab clicked", () => {
+  it("should display advanced courses when tab clicked - fakeAsync", fakeAsync(() => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
 
     fixture.detectChanges();
@@ -102,14 +104,43 @@ describe("HomeComponent", () => {
     const tabs = el.queryAll(By.css(".mdc-tab"));
 
     expect(tabs.length).toBe(2);
-
     click(tabs[1]);
 
-    const cardTitles = el.queryAll(By.css(".mat-mdc-card-title"));
+    fixture.detectChanges();
+
+    flush();
+
+    const cardTitles = el.queryAll(
+      By.css(".mat-mdc-tab-body-active .mat-mdc-card-title"),
+    );
 
     expect(cardTitles.length).toBeGreaterThan(0);
     expect(cardTitles[0].nativeElement.textContent).toContain(
       "Angular Security Course",
     );
-  });
+  }));
+
+  it("should display advanced courses when tab clicked - waitForAsync", waitForAsync(() => {
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+
+    fixture.detectChanges();
+
+    const tabs = el.queryAll(By.css(".mdc-tab"));
+
+    expect(tabs.length).toBe(2);
+    click(tabs[1]);
+
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      const cardTitles = el.queryAll(
+        By.css(".mat-mdc-tab-body-active .mat-mdc-card-title"),
+      );
+
+      expect(cardTitles.length).toBeGreaterThan(0);
+      expect(cardTitles[0].nativeElement.textContent).toContain(
+        "Angular Security Course",
+      );
+    });
+  }));
 });
